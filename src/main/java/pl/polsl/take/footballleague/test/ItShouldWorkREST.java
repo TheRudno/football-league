@@ -3,6 +3,7 @@ package pl.polsl.take.footballleague.test;
 
 import javax.ws.rs.*;
 @Path("/echo")
+
 public class ItShouldWorkREST{
 
     @Path("/{echo}")
