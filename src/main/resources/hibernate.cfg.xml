@@ -7,9 +7,9 @@
 
         <!-- JDBC Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://pgserver/football</property>
-        <property name="connection.username">JoseMourinho</property>
-        <property name="connection.password">SpecialOne</property>
+        <property name="connection.url">jdbc:postgresql://pgserver/clinic</property>
+        <property name="connection.username">clinicassistant</property>
+        <property name="connection.password">clinicassistant</property>
 
         <!-- JDBC connection pool settings ... using built-in test pool -->
         <property name="connection.pool_size">1</property>
