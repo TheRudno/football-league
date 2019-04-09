@@ -63,6 +63,11 @@
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>2.0.1.Final</version>
+                <configuration>
+                    <javaOpts>
+                        <javaOpt>-agentlib:jdwp=transport=dt_socket,address=12856,server=y,suspend=n</javaOpt>
+                    </javaOpts>
+                </configuration>
             </plugin>
         </plugins>
     </build>

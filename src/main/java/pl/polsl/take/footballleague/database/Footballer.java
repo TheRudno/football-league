@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Setter
@@ -23,13 +24,13 @@ public class Footballer {
     private String surname;
 
     @Column(nullable = false)
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(nullable = false)
     private String nationality;
 
     @ManyToOne
-    @JoinColumn(name = "clubId")
+    @JoinColumn
     private Club club;
 
     @OneToMany(mappedBy = "scorer")
