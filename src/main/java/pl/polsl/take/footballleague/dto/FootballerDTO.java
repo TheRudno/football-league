@@ -7,6 +7,12 @@ import lombok.Setter;
 import pl.polsl.take.footballleague.database.Club;
 import pl.polsl.take.footballleague.database.Footballer;
 
+import javax.inject.Inject;
+import javax.json.bind.annotation.JsonbDateFormat;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Setter
@@ -15,11 +21,25 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class FootballerDTO{
     private Long id;
+
+    @NotNull
+    @Pattern(regexp = "[A-Za-z]{2,}")
     private String name;
+    @NotNull
+    @Pattern(regexp = "[A-Za-z]{2,}")
     private String surname;
+    @JsonbDateFormat("yyyy-MM-dd")
+    @NotNull
+    @Pattern(regexp = "[A-Za-z]{2,}")
     private LocalDate dateOfBirth;
+    @NotNull
+    @Pattern(regexp = "[A-Za-z]{2,}")
     private String nationality;
+    @NotNull
+    @Pattern(regexp = "[A-Za-z]{2,}")
     private Club club;
+    @NotNull
+    @Pattern(regexp = "[A-Za-z]{2,}")
     private String position;
 
     public static FootballerDTO from(Footballer footballer){
@@ -40,7 +60,12 @@ public class FootballerDTO{
         footballer.setDateOfBirth(dateOfBirth);
         footballer.setNationality(nationality);
         footballer.setClub(club);
-        footballer.setPosition(Footballer.PlayerPosition.valueOf(position));
+        if(position != null){
+            try{
+                footballer.setPosition(Footballer.PlayerPosition.valueOf(position));
+            }catch(Exception ignored){
+            }
+        }
         return footballer;
     }
 

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,12 +19,17 @@ public class Footballer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Pattern(regexp = "[A-Za-z]{2,}")
     @Column(nullable = false)
     private String name;
 
+    @NotNull
+    @Pattern(regexp = "[A-Za-z]{2,}")
     @Column(nullable = false)
     private String surname;
 
+    @NotNull
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
@@ -37,6 +44,7 @@ public class Footballer {
     private List<Goal> goals;
 
     @Enumerated
+    @NotNull
     @Column(nullable = false)
     private PlayerPosition position;
 

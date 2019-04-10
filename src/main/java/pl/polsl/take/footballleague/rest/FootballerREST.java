@@ -3,6 +3,7 @@ package pl.polsl.take.footballleague.rest;
 
 import pl.polsl.take.footballleague.ApplicationConfig;
 import pl.polsl.take.footballleague.exceptions.ElementNotFoundException;
+import pl.polsl.take.footballleague.exceptions.ElementValidationException;
 import pl.polsl.take.footballleague.service.FootballerServiceBean;
 import pl.polsl.take.footballleague.database.Footballer;
 import pl.polsl.take.footballleague.dto.ErrorDTO;
@@ -10,6 +11,8 @@ import pl.polsl.take.footballleague.dto.FootballerDTO;
 import pl.polsl.take.footballleague.dto.FootballerListDTO;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
+import javax.validation.Validator;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -68,13 +71,13 @@ public class FootballerREST {
                     .status(Response.Status.NOT_FOUND)
                     .entity(ErrorDTO.from(exception))
                     .build();
-        }catch(Exception exception){
-            return Response
-                    .status(Response.Status.BAD_REQUEST)
-                    .entity(ErrorDTO.from(exception))
-                    .build();
         }
     }
+
+
+    @Inject
+    Validator validator;
+
 
     @POST
     @Path("/add")
@@ -82,11 +85,12 @@ public class FootballerREST {
     @Produces(ApplicationConfig.DEFAULT_MEDIA_TYPE)
     public Response add(FootballerDTO footballer){
         try{
+
             footballerService.add(footballer.toFootballer());
             return Response
                     .noContent()
                     .build();
-        }catch(Exception exception){
+        }catch(ElementValidationException exception){
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
