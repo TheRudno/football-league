@@ -4,42 +4,39 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.polsl.take.footballleague.database.Club;
 import pl.polsl.take.footballleague.database.Footballer;
+import pl.polsl.take.footballleague.exceptions.NoEnumConstantException;
 
-import javax.inject.Inject;
-import javax.json.bind.annotation.JsonbDateFormat;
-import javax.validation.ValidationException;
-import javax.validation.Validator;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.json.bind.annotation.JsonbProperty;
 import java.time.LocalDate;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class FootballerDTO{
+
+    @JsonbProperty
     private Long id;
 
-    @NotNull
-    @Pattern(regexp = "[A-Za-z]{2,}")
+    @JsonbProperty
     private String name;
-    @NotNull
-    @Pattern(regexp = "[A-Za-z]{2,}")
+
+    @JsonbProperty
     private String surname;
-    @JsonbDateFormat("yyyy-MM-dd")
-    @NotNull
-    @Pattern(regexp = "[A-Za-z]{2,}")
+
+    @JsonbProperty
     private LocalDate dateOfBirth;
-    @NotNull
-    @Pattern(regexp = "[A-Za-z]{2,}")
+
+    @JsonbProperty
     private String nationality;
-    @NotNull
-    @Pattern(regexp = "[A-Za-z]{2,}")
-    private Club club;
-    @NotNull
-    @Pattern(regexp = "[A-Za-z]{2,}")
+
+    @JsonbProperty(nillable = true)
+    private Long clubId;
+
+    @JsonbProperty
     private String position;
 
     public static FootballerDTO from(Footballer footballer){
@@ -48,7 +45,8 @@ public class FootballerDTO{
                 footballer.getSurname(),
                 footballer.getDateOfBirth(),
                 footballer.getNationality(),
-                footballer.getClub(),
+                15L,
+//                (footballer.getClub()!=null)?footballer.getClub().getId():null,
                 footballer.getPosition().name());
     }
 
@@ -59,11 +57,31 @@ public class FootballerDTO{
         footballer.setSurname(surname);
         footballer.setDateOfBirth(dateOfBirth);
         footballer.setNationality(nationality);
-        footballer.setClub(club);
         if(position != null){
             try{
                 footballer.setPosition(Footballer.PlayerPosition.valueOf(position));
             }catch(Exception ignored){
+            }
+        }
+        return footballer;
+    }
+
+    private <T> void mergeIfNotNull(Consumer<T> setter, T value){
+        if(Objects.nonNull(value)){
+            setter.accept(value);
+        }
+    }
+
+    public Footballer mergeWith(Footballer footballer) throws NoEnumConstantException {
+        mergeIfNotNull(footballer::setName, name);
+        mergeIfNotNull(footballer::setSurname, surname);
+        mergeIfNotNull(footballer::setDateOfBirth, dateOfBirth);
+        mergeIfNotNull(footballer::setNationality, nationality);
+        if(Objects.nonNull(position)){
+            try{
+                footballer.setPosition(Footballer.PlayerPosition.valueOf(position));
+            }catch(Exception ignored){
+                throw new NoEnumConstantException(position + " is not correct value of position");
             }
         }
         return footballer;

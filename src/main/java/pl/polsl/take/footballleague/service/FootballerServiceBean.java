@@ -33,13 +33,9 @@ public class FootballerServiceBean {
 
     }
 
-    public void update(Footballer footballer) throws ElementNotFoundException {
-        if(footballerDAO.getById(footballer.getId()) != null){
-            footballerDAO.update(footballer);
-        }else{
-            throw new ElementNotFoundException();
-        }
-
+    public void update(Footballer footballer) throws ElementValidationException {
+        validate(footballer);
+        footballerDAO.update(footballer);
     }
 
     public void add(Footballer footballer) throws ElementValidationException {
