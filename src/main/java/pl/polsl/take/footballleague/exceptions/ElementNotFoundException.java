@@ -1,7 +1,7 @@
 package pl.polsl.take.footballleague.exceptions;
 
 public class ElementNotFoundException extends Exception {
-    public ElementNotFoundException(){
-        super("Requested element not found.");
+    public ElementNotFoundException(Class tClass){
+        super(tClass.getSimpleName() + ": requested element not found.");
     }
 }

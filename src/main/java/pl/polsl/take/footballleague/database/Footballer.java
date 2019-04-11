@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,10 +20,12 @@ public class Footballer {
     private Long id;
 
     @NotNull
+    @NotEmpty
     @Column(nullable = false)
     private String name;
 
     @NotNull
+    @NotEmpty
     @Column(nullable = false)
     private String surname;
 
@@ -30,7 +33,8 @@ public class Footballer {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-
+    @NotNull
+    @NotEmpty
     @Column(nullable = false)
     private String nationality;
 

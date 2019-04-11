@@ -10,7 +10,8 @@ import pl.polsl.take.footballleague.exceptions.NoEnumConstantException;
 import javax.json.bind.annotation.JsonbProperty;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.function.Consumer;
+
+import static pl.polsl.take.footballleague.utils.Utils.consumeIfNonNull;
 
 @Setter
 @Getter
@@ -45,8 +46,7 @@ public class FootballerDTO{
                 footballer.getSurname(),
                 footballer.getDateOfBirth(),
                 footballer.getNationality(),
-                15L,
-//                (footballer.getClub()!=null)?footballer.getClub().getId():null,
+                (footballer.getClub()!=null)?footballer.getClub().getId():null,
                 footballer.getPosition().name());
     }
 
@@ -66,17 +66,11 @@ public class FootballerDTO{
         return footballer;
     }
 
-    private <T> void mergeIfNotNull(Consumer<T> setter, T value){
-        if(Objects.nonNull(value)){
-            setter.accept(value);
-        }
-    }
-
     public Footballer mergeWith(Footballer footballer) throws NoEnumConstantException {
-        mergeIfNotNull(footballer::setName, name);
-        mergeIfNotNull(footballer::setSurname, surname);
-        mergeIfNotNull(footballer::setDateOfBirth, dateOfBirth);
-        mergeIfNotNull(footballer::setNationality, nationality);
+        consumeIfNonNull(footballer::setName, name);
+        consumeIfNonNull(footballer::setSurname, surname);
+        consumeIfNonNull(footballer::setDateOfBirth, dateOfBirth);
+        consumeIfNonNull(footballer::setNationality, nationality);
         if(Objects.nonNull(position)){
             try{
                 footballer.setPosition(Footballer.PlayerPosition.valueOf(position));

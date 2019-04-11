@@ -28,7 +28,7 @@ public class FootballerServiceBean {
         if(footballer != null){
             return footballer;
         }else{
-            throw new ElementNotFoundException();
+            throw new ElementNotFoundException(Footballer.class);
         }
 
     }
@@ -48,7 +48,7 @@ public class FootballerServiceBean {
         if(footballer != null){
             footballerDAO.remove(footballer);
         }else{
-            throw new ElementNotFoundException();
+            throw new ElementNotFoundException(Footballer.class);
         }
     }
 
