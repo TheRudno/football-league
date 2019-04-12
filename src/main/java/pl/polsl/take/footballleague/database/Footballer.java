@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
 
 @Setter
@@ -16,26 +19,34 @@ public class Footballer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @NotEmpty
     @Column(nullable = false)
     private String name;
 
+    @NotNull
+    @NotEmpty
     @Column(nullable = false)
     private String surname;
 
+    @NotNull
     @Column(nullable = false)
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
 
+    @NotNull
+    @NotEmpty
     @Column(nullable = false)
     private String nationality;
 
     @ManyToOne
-    @JoinColumn(name = "clubId")
+    @JoinColumn
     private Club club;
 
     @OneToMany(mappedBy = "scorer")
     private List<Goal> goals;
 
     @Enumerated
+    @NotNull
     @Column(nullable = false)
     private PlayerPosition position;
 

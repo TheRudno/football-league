@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Setter
@@ -26,7 +26,7 @@ public class Match {
     private Club awaySide;
 
     @Column(nullable = false)
-    private LocalDateTime matchDate;
+    private LocalDate matchDate;
 
     @OneToMany(mappedBy = "match")
     private List<Goal> goals;
