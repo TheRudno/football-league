@@ -34,7 +34,7 @@ public class Match {
     @Column(nullable = false)
     private Result result;
 
-    private enum Result{
+    public enum Result{
         HOMEWIN,AWAYWIN,DRAW
     }
 

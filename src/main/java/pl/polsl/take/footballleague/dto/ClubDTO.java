@@ -44,8 +44,4 @@ public class ClubDTO {
         return club;
     }
 
-
-
-
-
 }

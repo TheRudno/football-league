@@ -11,6 +11,7 @@ import javax.json.bind.annotation.JsonbProperty;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static pl.polsl.take.footballleague.utils.Utils.consumeEnumIfNonNull;
 import static pl.polsl.take.footballleague.utils.Utils.consumeIfNonNull;
 
 @Setter
@@ -71,13 +72,7 @@ public class FootballerDTO{
         consumeIfNonNull(footballer::setSurname, surname);
         consumeIfNonNull(footballer::setDateOfBirth, dateOfBirth);
         consumeIfNonNull(footballer::setNationality, nationality);
-        if(Objects.nonNull(position)){
-            try{
-                footballer.setPosition(Footballer.PlayerPosition.valueOf(position));
-            }catch(Exception ignored){
-                throw new NoEnumConstantException(position + " is not correct value of position");
-            }
-        }
+        consumeEnumIfNonNull(footballer::setPosition, Footballer.PlayerPosition.valueOf(position));
         return footballer;
     }
 

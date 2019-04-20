@@ -28,7 +28,7 @@ public class Goal {
     @Column(nullable = false)
     private Team team;
 
-    private enum Team{
+    public enum Team{
         HOME,AWAY
     }
 
