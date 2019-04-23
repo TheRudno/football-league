@@ -51,7 +51,7 @@ public class GoalREST {
             Goal newGoal = goal.toGoal();
             newGoal.setScorer(footballerService.getById(goal.getScorer()));
             newGoal.setMatch(matchService.getById(goal.getMatch()));
-            goalService.add(goal.toGoal());
+            goalService.add(newGoal);
             return Response
                     .noContent()
                     .build();
@@ -108,7 +108,6 @@ public class GoalREST {
                     .entity(ErrorDTO.from(exception))
                     .build();
         }
-
     }
 
     @GET

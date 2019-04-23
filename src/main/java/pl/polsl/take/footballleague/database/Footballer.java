@@ -19,12 +19,10 @@ public class Footballer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @NotEmpty
     @Column(nullable = false)
     private String name;
 
-    @NotNull
     @NotEmpty
     @Column(nullable = false)
     private String surname;
@@ -33,7 +31,6 @@ public class Footballer {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-    @NotNull
     @NotEmpty
     @Column(nullable = false)
     private String nationality;
