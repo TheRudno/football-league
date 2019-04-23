@@ -3,14 +3,15 @@ package pl.polsl.take.footballleague.rest;
 
 import pl.polsl.take.footballleague.ApplicationConfig;
 import pl.polsl.take.footballleague.database.Goal;
-import pl.polsl.take.footballleague.database.Match;
 import pl.polsl.take.footballleague.dto.ErrorDTO;
 import pl.polsl.take.footballleague.dto.GoalDTO;
 import pl.polsl.take.footballleague.dto.GoalListDTO;
 import pl.polsl.take.footballleague.exceptions.ElementNotFoundException;
 import pl.polsl.take.footballleague.exceptions.ElementValidationException;
 import pl.polsl.take.footballleague.exceptions.NoEnumConstantException;
+import pl.polsl.take.footballleague.service.FootballerServiceBean;
 import pl.polsl.take.footballleague.service.GoalServiceBean;
+import pl.polsl.take.footballleague.service.MatchServiceBean;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -22,6 +23,12 @@ public class GoalREST {
 
     @EJB
     GoalServiceBean goalService;
+
+    @EJB
+    MatchServiceBean matchService;
+
+    @EJB
+    FootballerServiceBean footballerService;
 
     @GET
     @Path("/")
@@ -41,11 +48,19 @@ public class GoalREST {
     public Response add(GoalDTO goal){
         try{
             goal.setId(null);
+            Goal newGoal = goal.toGoal();
+            newGoal.setScorer(footballerService.getById(goal.getScorer()));
+            newGoal.setMatch(matchService.getById(goal.getMatch()));
             goalService.add(goal.toGoal());
             return Response
                     .noContent()
                     .build();
         }catch(ElementValidationException exception){
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(ErrorDTO.from(exception))
+                    .build();
+        } catch (ElementNotFoundException exception) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
@@ -71,6 +86,8 @@ public class GoalREST {
     public Response update(@PathParam("id")Long id, GoalDTO goal){
         try {
             Goal target = goalService.getById(id);
+            target.setScorer(footballerService.getById(goal.getScorer()));
+            target.setMatch(matchService.getById(goal.getMatch()));
             goalService.update(goal.mergeWith(target));
             return Response
                     .noContent()

@@ -1,6 +1,7 @@
 package pl.polsl.take.footballleague.rest;
 
 import pl.polsl.take.footballleague.ApplicationConfig;
+import pl.polsl.take.footballleague.database.Goal;
 import pl.polsl.take.footballleague.database.Match;
 import pl.polsl.take.footballleague.dto.ErrorDTO;
 import pl.polsl.take.footballleague.dto.MatchDTO;
@@ -8,18 +9,27 @@ import pl.polsl.take.footballleague.dto.MatchListDTO;
 import pl.polsl.take.footballleague.exceptions.ElementNotFoundException;
 import pl.polsl.take.footballleague.exceptions.ElementValidationException;
 import pl.polsl.take.footballleague.exceptions.NoEnumConstantException;
+import pl.polsl.take.footballleague.service.ClubServiceBean;
+import pl.polsl.take.footballleague.service.GoalServiceBean;
 import pl.polsl.take.footballleague.service.MatchServiceBean;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/match")
 public class MatchREST {
 
     @EJB
+    GoalServiceBean goalService;
+
+    @EJB
     MatchServiceBean matchService;
+
+    @EJB
+    ClubServiceBean clubService;
 
     @GET
     @Path("/")
@@ -39,11 +49,24 @@ public class MatchREST {
     public Response add(MatchDTO match){
         try{
             match.setId(null);
-            matchService.add(match.toMatch());
+            Match newMatch = match.toMatch();
+            newMatch.setHomeSide(clubService.getById(match.getHomeSide()));
+            newMatch.setAwaySide(clubService.getById(match.getAwaySide()));
+            List<Goal> goals=  new ArrayList<>();
+            for (Long l:  match.getGoals()){
+                goals.add(goalService.getById(l));
+            }
+            newMatch.setGoals(goals);
+            matchService.add(newMatch);
             return Response
                     .noContent()
                     .build();
         }catch(ElementValidationException exception){
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(ErrorDTO.from(exception))
+                    .build();
+        } catch (ElementNotFoundException exception) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
@@ -69,6 +92,13 @@ public class MatchREST {
     public Response update(@PathParam("id")Long id, MatchDTO match){
         try {
             Match target = matchService.getById(id);
+            target.setHomeSide(clubService.getById(match.getHomeSide()));
+            target.setAwaySide(clubService.getById(match.getAwaySide()));
+            List<Goal> goals=  new ArrayList<>();
+            for (Long l:  match.getGoals()){
+                goals.add(goalService.getById(l));
+            }
+            target.setGoals(goals);
             matchService.update(match.mergeWith(target));
             return Response
                     .noContent()
