@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Setter
@@ -18,17 +17,14 @@ public class Club {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @NotEmpty
     @Column(nullable = false)
     private String name;
 
-    @NotNull
     @NotEmpty
     @Column(nullable = false)
     private String city;
 
-    @NotNull
     @NotEmpty
     @Column(nullable = false)
     private String country;

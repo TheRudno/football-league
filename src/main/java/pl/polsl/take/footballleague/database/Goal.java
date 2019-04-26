@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Setter
 @Getter
@@ -14,21 +16,25 @@ public class Goal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     @Column(nullable = false)
     private int goalMinute;
 
+    @NotNull
     @ManyToOne
     @JoinColumn
     private Match match;
 
-    @ManyToOne()
+    @NotNull
+    @ManyToOne
     @JoinColumn
     private Footballer scorer;
 
+    @NotEmpty
     @Column(nullable = false)
     private Team team;
 
-    private enum Team{
+    public enum Team{
         HOME,AWAY
     }
 
