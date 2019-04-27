@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Set;
 
 @Path("/footballer")
 public class FootballerREST {
@@ -31,7 +32,7 @@ public class FootballerREST {
     @Path("/")
     @Produces(ApplicationConfig.DEFAULT_MEDIA_TYPE)
     public Response getAll() {
-        List<Footballer> footballerList = footballerService.getAll();
+        Set<Footballer> footballerList = footballerService.getAll();
         return Response
                 .ok()
                 .entity(FootballerListDTO.from(footballerList))

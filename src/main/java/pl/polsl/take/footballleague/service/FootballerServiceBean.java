@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
 import java.util.List;
+import java.util.Set;
 
 @Stateless
 public class FootballerServiceBean {
@@ -19,7 +20,7 @@ public class FootballerServiceBean {
     @Inject
     Validator validator;
 
-    public List<Footballer> getAll(){
+    public Set<Footballer> getAll(){
         return footballerDAO.getAll();
     }
 
