@@ -7,7 +7,6 @@ import lombok.Setter;
 import pl.polsl.take.footballleague.database.Footballer;
 import pl.polsl.take.footballleague.exceptions.ConversionException;
 
-import javax.json.bind.annotation.JsonbDateFormat;
 import javax.json.bind.annotation.JsonbProperty;
 import java.time.LocalDate;
 
@@ -30,7 +29,6 @@ public class FootballerDTO{
     private String surname;
 
     @JsonbProperty
-    @JsonbDateFormat("yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     @JsonbProperty
