@@ -8,7 +8,7 @@ import pl.polsl.take.footballleague.dto.MatchDTO;
 import pl.polsl.take.footballleague.dto.MatchListDTO;
 import pl.polsl.take.footballleague.exceptions.ElementNotFoundException;
 import pl.polsl.take.footballleague.exceptions.ElementValidationException;
-import pl.polsl.take.footballleague.exceptions.NoEnumConstantException;
+import pl.polsl.take.footballleague.exceptions.ConversionException;
 import pl.polsl.take.footballleague.service.ClubServiceBean;
 import pl.polsl.take.footballleague.service.GoalServiceBean;
 import pl.polsl.take.footballleague.service.MatchServiceBean;
@@ -50,11 +50,16 @@ public class MatchREST {
         try{
             match.setId(null);
             Match newMatch = match.toMatch();
-            newMatch.setHomeSide(clubService.getById(match.getHomeSide()));
-            newMatch.setAwaySide(clubService.getById(match.getAwaySide()));
-            List<Goal> goals=  new ArrayList<>();
-            for (Long l:  match.getGoals()){
-                goals.add(goalService.getById(l));
+            if(match.getHomeSide()!=null)
+                newMatch.setHomeSide(clubService.getById(match.getHomeSide()));
+            if(match.getHomeSide()!=null)
+                newMatch.setAwaySide(clubService.getById(match.getAwaySide()));
+
+            List<Goal> goals = new ArrayList<>();
+            if(match.getGoals()!=null){
+                for (Long l:  match.getGoals()){
+                    goals.add(goalService.getById(l));
+                }
             }
             newMatch.setGoals(goals);
             matchService.add(newMatch);
@@ -66,7 +71,7 @@ public class MatchREST {
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
                     .build();
-        } catch (ElementNotFoundException exception) {
+        } catch (IllegalArgumentException | ElementNotFoundException | ConversionException exception) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
@@ -113,7 +118,7 @@ public class MatchREST {
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
                     .build();
-        }catch(NoEnumConstantException exception){
+        }catch(ConversionException exception){
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))

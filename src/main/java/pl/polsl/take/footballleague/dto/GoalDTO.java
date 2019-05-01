@@ -6,11 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.polsl.take.footballleague.database.Goal;
-import pl.polsl.take.footballleague.exceptions.NoEnumConstantException;
+import pl.polsl.take.footballleague.exceptions.ConversionException;
 
-
-import static pl.polsl.take.footballleague.utils.Utils.consumeEnumIfNonNull;
 import static pl.polsl.take.footballleague.utils.Utils.consumeIfNonNull;
+import static pl.polsl.take.footballleague.utils.Utils.convertAndConsumeIfNonNull;
 
 
 @Setter
@@ -42,9 +41,10 @@ public class GoalDTO {
         return goal;
     }
 
-    public Goal mergeWith(Goal goal) throws NoEnumConstantException{
+    public Goal mergeWith(Goal goal) throws ConversionException {
         consumeIfNonNull(goal::setGoalMinute,goalMinute);
-        consumeEnumIfNonNull(goal::setTeam, Goal.Team.valueOf(side));
+
+        convertAndConsumeIfNonNull(goal::setTeam, Goal.Team::valueOf, side);
         return goal;
     }
 

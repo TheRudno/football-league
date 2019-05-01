@@ -9,7 +9,7 @@ import pl.polsl.take.footballleague.dto.FootballerDTO;
 import pl.polsl.take.footballleague.dto.FootballerListDTO;
 import pl.polsl.take.footballleague.exceptions.ElementNotFoundException;
 import pl.polsl.take.footballleague.exceptions.ElementValidationException;
-import pl.polsl.take.footballleague.exceptions.NoEnumConstantException;
+import pl.polsl.take.footballleague.exceptions.ConversionException;
 import pl.polsl.take.footballleague.service.ClubServiceBean;
 import pl.polsl.take.footballleague.service.FootballerServiceBean;
 
@@ -18,6 +18,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Set;
+
 
 @Path("/footballer")
 public class FootballerREST {
@@ -119,7 +120,7 @@ public class FootballerREST {
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
                     .build();
-        }catch(NoEnumConstantException exception){
+        }catch(ConversionException exception){
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))

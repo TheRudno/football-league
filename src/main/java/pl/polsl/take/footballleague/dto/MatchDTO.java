@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.polsl.take.footballleague.database.Goal;
 import pl.polsl.take.footballleague.database.Match;
-import pl.polsl.take.footballleague.exceptions.NoEnumConstantException;
+import pl.polsl.take.footballleague.exceptions.ConversionException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.polsl.take.footballleague.utils.Utils.consumeEnumIfNonNull;
-import static pl.polsl.take.footballleague.utils.Utils.consumeIfNonNull;
+import static pl.polsl.take.footballleague.utils.Utils.*;
 
 @Setter
 @Getter
@@ -48,17 +47,17 @@ public class MatchDTO {
         return  goalsIDS;
     }
 
-    public Match toMatch(){
+    public Match toMatch() throws ConversionException {
         Match match = new Match();
-        match.setResult(Match.Result.valueOf(result));
+        convertAndConsumeIfNonNull(match::setResult, Match.Result::valueOf, result);
         match.setMatchDate(matchDate);
         match.setId(id);
         return match;
     }
 
-    public Match mergeWith(Match match) throws NoEnumConstantException {
+    public Match mergeWith(Match match) throws ConversionException {
         consumeIfNonNull(match::setMatchDate, matchDate);
-        consumeEnumIfNonNull(match::setResult, Match.Result.valueOf(result));
+        convertAndConsumeIfNonNull(match::setResult, Match.Result::valueOf, result);
         return match;
     }
 
