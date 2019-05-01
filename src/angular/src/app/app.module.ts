@@ -11,6 +11,7 @@ import {RouterModule, Routes} from "@angular/router";
 import { PageNotFoundComponent } from './html/page-not-found/page-not-found.component';
 import { ClubSquadComponent } from './html/club/club-squad/club-squad.component';
 import {FormsModule} from "@angular/forms";
+import { MatchComponent } from './html/match/match.component';
 
 
 const  routes: Routes = [
@@ -19,6 +20,7 @@ const  routes: Routes = [
       {path: 'add', component: ClubEditComponent},
       {path: 'squad/:id', component: ClubSquadComponent}
     ]},
+  {path: 'matches', component: MatchComponent},
   {path: '**', component: PageNotFoundComponent}
 ]
 
@@ -31,7 +33,8 @@ const  routes: Routes = [
     ClubComponent,
     ClubEditComponent,
     PageNotFoundComponent,
-    ClubSquadComponent
+    ClubSquadComponent,
+    MatchComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
