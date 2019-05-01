@@ -1,0 +1,11 @@
+<div class="col-md-10 mb-3">
+  <h1>Squad</h1>
+</div>
+<div class="row text-center">
+  <div class="col-md-5 club mb-2 mr-2 player" *ngFor="let footballer of footballers; let i = index">
+    <h3>{{footballer.name}}  {{footballer.surname}}</h3>
+    <p>{{footballer.position}}</p>
+    <p>{{footballer.nationality}}  {{footballer.dateOfBirth}}</p>
+  </div>
+</div>
+
