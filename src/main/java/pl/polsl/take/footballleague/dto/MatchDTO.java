@@ -35,7 +35,7 @@ public class MatchDTO {
                 match.getAwaySide().getId(),
                 match.getMatchDate(),
                 toGoalListIDS(match.getGoals()),
-                match.getResult().name()
+                (match.getResult()!=null)?match.getResult().name():null
         );
     }
 

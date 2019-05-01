@@ -36,7 +36,7 @@ public class Match {
     @OneToMany(mappedBy = "match",fetch = FetchType.EAGER)
     private List<Goal> goals;
 
-    @Column(nullable = false)
+    @Column()
     private Result result;
 
     public enum Result{
