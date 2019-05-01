@@ -29,7 +29,7 @@ public class Match {
     @JoinColumn
     private Club awaySide;
 
-    @NotEmpty
+    @NotNull
     @Column(nullable = false)
     private LocalDate matchDate;
 

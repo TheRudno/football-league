@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.polsl.take.footballleague.database.Footballer;
-import pl.polsl.take.footballleague.exceptions.NoEnumConstantException;
+import pl.polsl.take.footballleague.exceptions.ConversionException;
 
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.json.bind.annotation.JsonbProperty;
 import java.time.LocalDate;
-import java.util.Objects;
 
-import static pl.polsl.take.footballleague.utils.Utils.consumeEnumIfNonNull;
 import static pl.polsl.take.footballleague.utils.Utils.consumeIfNonNull;
+import static pl.polsl.take.footballleague.utils.Utils.convertAndConsumeIfNonNull;
 
 @Setter
 @Getter
@@ -30,6 +30,7 @@ public class FootballerDTO{
     private String surname;
 
     @JsonbProperty
+    @JsonbDateFormat("yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     @JsonbProperty
@@ -67,12 +68,12 @@ public class FootballerDTO{
         return footballer;
     }
 
-    public Footballer mergeWith(Footballer footballer) throws NoEnumConstantException {
+    public Footballer mergeWith(Footballer footballer) throws ConversionException {
         consumeIfNonNull(footballer::setName, name);
         consumeIfNonNull(footballer::setSurname, surname);
         consumeIfNonNull(footballer::setDateOfBirth, dateOfBirth);
         consumeIfNonNull(footballer::setNationality, nationality);
-        consumeEnumIfNonNull(footballer::setPosition, Footballer.PlayerPosition.valueOf(position));
+        convertAndConsumeIfNonNull(footballer::setPosition, Footballer.PlayerPosition::valueOf,position);
         return footballer;
     }
 

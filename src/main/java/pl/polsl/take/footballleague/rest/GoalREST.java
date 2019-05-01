@@ -8,7 +8,7 @@ import pl.polsl.take.footballleague.dto.GoalDTO;
 import pl.polsl.take.footballleague.dto.GoalListDTO;
 import pl.polsl.take.footballleague.exceptions.ElementNotFoundException;
 import pl.polsl.take.footballleague.exceptions.ElementValidationException;
-import pl.polsl.take.footballleague.exceptions.NoEnumConstantException;
+import pl.polsl.take.footballleague.exceptions.ConversionException;
 import pl.polsl.take.footballleague.service.FootballerServiceBean;
 import pl.polsl.take.footballleague.service.GoalServiceBean;
 import pl.polsl.take.footballleague.service.MatchServiceBean;
@@ -102,7 +102,7 @@ public class GoalREST {
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
                     .build();
-        }catch(NoEnumConstantException exception){
+        }catch(ConversionException exception){
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
