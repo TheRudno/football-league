@@ -11,6 +11,11 @@ import {RouterModule, Routes} from "@angular/router";
 import { PageNotFoundComponent } from './html/page-not-found/page-not-found.component';
 import { ClubSquadComponent } from './html/club/club-squad/club-squad.component';
 import {FormsModule} from "@angular/forms";
+import {FootballerComponent} from "./html/footballer/footballer.component";
+import {FootballerEditComponent} from "./html/footballer/footballer-edit/footballer-edit.component";
+import {UpdateEmitterService} from "./services/update-emitter.service";
+import {CommonModule} from "@angular/common";
+
 
 
 const  routes: Routes = [
@@ -18,7 +23,12 @@ const  routes: Routes = [
       {path: 'edit/:id', component: ClubEditComponent},
       {path: 'add', component: ClubEditComponent},
       {path: 'squad/:id', component: ClubSquadComponent}
+      ]},
+  {path: 'footballers', component: FootballerComponent, children:[
+      {path: 'edit/:id', component: FootballerEditComponent},
+      {path: 'add', component: FootballerEditComponent}
     ]},
+  {path: '', component: ClubComponent, pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ]
 
@@ -31,15 +41,18 @@ const  routes: Routes = [
     ClubComponent,
     ClubEditComponent,
     PageNotFoundComponent,
-    ClubSquadComponent
+    ClubSquadComponent,
+    FootballerEditComponent,
+    FootballerComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule,
   ],
-  providers: [],
+  providers: [UpdateEmitterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

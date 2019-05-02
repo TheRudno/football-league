@@ -2,6 +2,8 @@ import {Component, OnInit } from '@angular/core';
 import {ClubService} from "../../services/club.service";
 import {Club} from "../../shared/club.model";
 import {Router} from "@angular/router";
+import {UpdateEmitterService} from "../../services/update-emitter.service";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -12,19 +14,35 @@ import {Router} from "@angular/router";
 export class ClubComponent implements OnInit {
 
   public clubs : Club [];
+  private sub: Subscription;
 
-  constructor(private clubService : ClubService, private router: Router) { }
+  constructor(private clubService : ClubService, private updateService: UpdateEmitterService) { }
 
   ngOnInit() {
-    this.clubService.getClubs().subscribe(
-      (data : Club[]) => this.clubs = data,
+    this.sub = this.clubService.getClubs().subscribe(
+      (data : Club[]) => {
+        this.clubs = data;
+        this.clubs.sort(((a, b) => a.id-b.id))
+      },
       error => { console.log(error) }
+    )
+    this.updateService.clubsUpdate.subscribe(
+      data => {
+        this.sub.unsubscribe();
+        this.sub = this.clubService.getClubs().subscribe(
+          (data : Club[]) => {
+            this.clubs = data;
+            this.clubs.sort(((a, b) => a.id-b.id))
+          },
+          error => { console.log(error) }
+        )
+      }
     )
   }
 
   removeClub(index: number){
     this.clubService.removeClub(this.clubs[index].id).subscribe(
-      data => { if(data.status==204) this.clubs.splice(index,1)},
+      data => { this.clubs.splice(index,1)},
       error => { console.log(error) }
     )
   }

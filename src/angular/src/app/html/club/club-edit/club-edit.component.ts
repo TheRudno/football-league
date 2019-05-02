@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
 import {Club} from "../../../shared/club.model";
 import {ClubService} from "../../../services/club.service";
+import {UpdateEmitterService} from "../../../services/update-emitter.service";
 
 @Component({
   selector: 'app-club-edit',
@@ -16,7 +17,8 @@ export class ClubEditComponent implements OnInit {
   public model: Club = new Club(null,null,null,null);
   private addMode: boolean;
 
-  constructor(private route: ActivatedRoute, private clubService: ClubService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private clubService: ClubService, private router: Router
+              ,private updateService: UpdateEmitterService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -42,9 +44,13 @@ export class ClubEditComponent implements OnInit {
 
   onSubmit(form: NgForm){
     if(!this.addMode)
-      this.clubService.updateClub(this.model).subscribe();
+      this.clubService.updateClub(this.model).subscribe(
+        data => this.updateService.updateClubs()
+      );
     else
-      this.clubService.addClub(this.model).subscribe();
+      this.clubService.addClub(this.model).subscribe(
+        data => this.updateService.updateClubs()
+      );
   }
 
 }

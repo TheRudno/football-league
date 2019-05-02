@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {restPath} from "../../environments/environment";
+import {option, restPath} from "../../environments/environment";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Footballer, FootballerAdapter} from "../shared/footballer.model";
-import {throwError} from "rxjs";
+import {Observable, throwError} from "rxjs";
+import {catchError, map} from "rxjs/operators";
 
 
 @Injectable({
@@ -10,8 +11,7 @@ import {throwError} from "rxjs";
 })
 export class FootballerService {
 
-  private restPath = restPath.restPath;
-  private footballers: Footballer[] = [];
+  private restPath = restPath.restPath + '/footballer/';
 
   constructor( private http: HttpClient, private footballerAdapter: FootballerAdapter) { }
 
@@ -25,6 +25,58 @@ export class FootballerService {
     }
     // return an observable with a user-facing error message
     return throwError(error);
+  }
+
+  getFootballers() : Observable<Footballer[]> {
+    return this.http.get(this.restPath).pipe(
+      map( (data: any) => data.footballers.map( item => this.footballerAdapter.adapt(item)
+      )),
+      catchError(this.handleError)
+    );
+  }
+
+  getFootballer(id: number) : Observable<Footballer> {
+    return this.http.get(this.restPath + id).pipe(
+      map( (data: any) => this.footballerAdapter.adapt(data)
+      ),
+      catchError(this.handleError)
+    );
+  }
+
+  getPositions() : Observable<String[]> {
+    return this.http.get(this.restPath+ 'positions').pipe(
+      map( (data: any) => data.map( item => item)),
+      catchError(this.handleError)
+    );
+  }
+
+  removeFootballer(id: number): Observable<any>{
+    return this.http.get(this.restPath + id + '/remove', {observe: 'response'}).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateFootballer(footballer: Footballer): Observable<any> {
+    return this.http.post(this.restPath + footballer.id + '/update', JSON.stringify(footballer), option).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  addFootballer(footballer: Footballer): Observable<any> {
+    return this.http.post(this.restPath + 'add', JSON.stringify(footballer), option).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  assignClub(footballerId: number, clubId: number): Observable<any> {
+    if(clubId != null)
+      return this.http.get(this.restPath + footballerId + '/update/club/' + clubId).pipe(
+        catchError(this.handleError)
+      )
+    else
+      return this.http.get(this.restPath + footballerId + '/update/club/null').pipe(
+        catchError(this.handleError)
+      )
   }
 
 

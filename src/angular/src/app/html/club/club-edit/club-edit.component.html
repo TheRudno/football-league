@@ -5,22 +5,22 @@
         <div id="club-data">
 
           <div class="form-group">
-            <label for="name">Club name</label>
+            <label for="name">Nazwa</label>
             <input type="text" id="name" class="form-control" [(ngModel)]="model.name" name="name" required>
           </div>
 
           <div class="form-group">
-            <label for="city">Club city</label>
+            <label for="city">Miasto</label>
             <input type="text" id="city" class="form-control" [(ngModel)]="model.city" name="city" required>
           </div>
 
           <div class="form-group">
-            <label for="country">Club country</label>
+            <label for="country">Kraj</label>
             <input type="text" id="country" class="form-control" [(ngModel)]="model.country" name="country" required>
           </div>
 
         </div>
-        <button class="btn-primary" type="submit" [disabled]="f.invalid" [ngClass]="{'btn-disabled': f.invalid}">{{btnText}}</button>
+        <button class=" btn btn-primary" type="submit" [disabled]="f.invalid" [ngClass]="{'disabled': f.invalid}">{{btnText}}</button>
       </form>
     </div>
   </div>

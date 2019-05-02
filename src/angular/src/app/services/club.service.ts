@@ -13,7 +13,6 @@ import {Footballer, FootballerAdapter} from "../shared/footballer.model";
 export class ClubService {
 
   private restPath = restPath.restPath + '/club/';
-  private clubs: Club[] = [];
 
   constructor( private http: HttpClient, private clubAdapter: ClubAdapter, private footballerAdapter: FootballerAdapter) { }
 
