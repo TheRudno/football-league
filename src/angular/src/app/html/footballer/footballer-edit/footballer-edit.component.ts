@@ -6,6 +6,7 @@ import {FootballerService} from "../../../services/footballer.service";
 import {Club} from "../../../shared/club.model";
 import {NgForm} from "@angular/forms";
 import {UpdateEmitterService} from "../../../services/update-emitter.service";
+import {restPath} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-footballer-edit',
@@ -58,18 +59,27 @@ export class FootballerEditComponent implements OnInit {
   onSubmit(form: NgForm){
     if(!this.addMode)
       this.footballerService.updateFootballer(this.model).subscribe(
-        data => this.updateEmitter.updateFootballers()
+        data => {
+          this.updateEmitter.updateFootballers();
+          this.router.navigate(["./footballers"])
+        }
       );
     else
       this.footballerService.addFootballer(this.model).subscribe(
-        data => this.updateEmitter.updateFootballers()
+        data => {
+          this.updateEmitter.updateFootballers();
+          this.router.navigate(["./footballers"])
+        }
       );
   }
 
   onChangeClub(form: NgForm) {
     console.log(this.selectedClub);
     this.footballerService.assignClub(this.model.id, this.selectedClub.id).subscribe(
-      data => this.updateEmitter.updateFootballers()
+      data => {
+        this.updateEmitter.updateFootballers();
+        this.router.navigate(["./footballers"])
+      }
     );
   }
 

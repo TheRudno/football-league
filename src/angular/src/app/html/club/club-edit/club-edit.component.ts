@@ -45,11 +45,17 @@ export class ClubEditComponent implements OnInit {
   onSubmit(form: NgForm){
     if(!this.addMode)
       this.clubService.updateClub(this.model).subscribe(
-        data => this.updateService.updateClubs()
+        data => {
+          this.updateService.updateClubs();
+          this.router.navigate(["./clubs"])
+        }
       );
     else
       this.clubService.addClub(this.model).subscribe(
-        data => this.updateService.updateClubs()
+        data => {
+          this.updateService.updateClubs();
+          this.router.navigate(["./clubs"])
+        }
       );
   }
 
