@@ -4,6 +4,7 @@ import {Club} from "../../shared/club.model";
 import {Router} from "@angular/router";
 import {UpdateEmitterService} from "../../services/update-emitter.service";
 import {Subscription} from "rxjs";
+import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -16,7 +17,8 @@ export class ClubComponent implements OnInit {
   public clubs : Club [];
   private sub: Subscription;
 
-  constructor(private clubService : ClubService, private updateService: UpdateEmitterService) { }
+  constructor(private clubService : ClubService, private updateService: UpdateEmitterService,
+              private toastr: ToastrService) { }
 
   ngOnInit() {
     this.sub = this.clubService.getClubs().subscribe(
@@ -24,8 +26,9 @@ export class ClubComponent implements OnInit {
         this.clubs = data;
         this.clubs.sort(((a, b) => a.id-b.id))
       },
-      error => { console.log(error) }
-    )
+      error => this.toastr.warning(error.message, 'Warning!')
+
+  )
     this.updateService.clubsUpdate.subscribe(
       data => {
         this.sub.unsubscribe();
@@ -34,7 +37,7 @@ export class ClubComponent implements OnInit {
             this.clubs = data;
             this.clubs.sort(((a, b) => a.id-b.id))
           },
-          error => { console.log(error) }
+          error => this.toastr.warning(error.message, 'Warning!')
         )
       }
     )
@@ -42,10 +45,12 @@ export class ClubComponent implements OnInit {
 
   removeClub(index: number){
     this.clubService.removeClub(this.clubs[index].id).subscribe(
-      data => { this.clubs.splice(index,1)},
-      error => { console.log(error) }
+      data => {
+        this.clubs.splice(index,1)
+        this.toastr.success("Usunięto klub", 'Success!');
+      },
+      error => this.toastr.error(error.message, 'Error!')
     )
   }
-
 
 }

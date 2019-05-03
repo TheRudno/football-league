@@ -6,7 +6,7 @@ import {FootballerService} from "../../../services/footballer.service";
 import {Club} from "../../../shared/club.model";
 import {NgForm} from "@angular/forms";
 import {UpdateEmitterService} from "../../../services/update-emitter.service";
-import {restPath} from "../../../../environments/environment";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-footballer-edit',
@@ -24,7 +24,7 @@ export class FootballerEditComponent implements OnInit {
   public addMode: boolean;
 
   constructor(private route: ActivatedRoute, private clubService: ClubService, private router: Router, private footballerService: FootballerService,
-              private updateEmitter: UpdateEmitterService) { }
+              private updateEmitter: UpdateEmitterService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.footballerService.getPositions().subscribe(
@@ -61,15 +61,20 @@ export class FootballerEditComponent implements OnInit {
       this.footballerService.updateFootballer(this.model).subscribe(
         data => {
           this.updateEmitter.updateFootballers();
+          this.toastr.success("Edytowano zawodnika", 'Success!');
           this.router.navigate(["./footballers"])
-        }
+        },
+        error => this.toastr.error(error.message, 'Warning!')
       );
     else
       this.footballerService.addFootballer(this.model).subscribe(
         data => {
           this.updateEmitter.updateFootballers();
+          this.toastr.success("Dodano zawodnika", 'Success!');
           this.router.navigate(["./footballers"])
-        }
+        },
+        error => this.toastr.error(error.message, 'Warning!')
+
       );
   }
 
@@ -78,8 +83,10 @@ export class FootballerEditComponent implements OnInit {
     this.footballerService.assignClub(this.model.id, this.selectedClub.id).subscribe(
       data => {
         this.updateEmitter.updateFootballers();
-        this.router.navigate(["./footballers"])
-      }
+        this.toastr.success("Zmienioni klub zawodnika", 'Success!');
+        this.router.navigate(["./footballers"]);
+      },
+      error => this.toastr.error(error.message, 'Warning!')
     );
   }
 

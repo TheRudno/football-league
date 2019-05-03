@@ -3,6 +3,7 @@ import {Footballer} from "../../shared/footballer.model";
 import {FootballerService} from "../../services/footballer.service";
 import {Subscription} from "rxjs";
 import {UpdateEmitterService} from "../../services/update-emitter.service";
+import {ToastrService} from "ngx-toastr";
 
 
 @Component({
@@ -16,7 +17,7 @@ export class FootballerComponent implements OnInit {
    private sub: Subscription;
 
   constructor(private footballerService: FootballerService, private updateService: UpdateEmitterService,
-              ) { }
+              private toastr: ToastrService) { }
 
 
   ngOnInit() {
@@ -25,7 +26,7 @@ export class FootballerComponent implements OnInit {
         this.footballers = data;
         this.footballers.sort((a: Footballer,  b: Footballer) => a.id-b.id)
       },
-      error1 => console.log(error1.toString())
+      error => this.toastr.warning(error.message, "Warning!")
     );
 
     this.updateService.footballersUpdate.subscribe(
@@ -36,7 +37,7 @@ export class FootballerComponent implements OnInit {
             this.footballers = data;
             this.footballers.sort((a: Footballer,  b: Footballer) => a.id-b.id);
           },
-          error1 => console.log(error1.toString())
+          error => this.toastr.warning(error.message, "Warning!")
         );
       }
     )
@@ -44,16 +45,11 @@ export class FootballerComponent implements OnInit {
 
   removeFootballer(index: number){
     this.footballerService.removeFootballer(this.footballers[index].id).subscribe(
-      data => { this.footballers.splice(index,1)},
-      error => { console.log(error) }
-    )
-  }
-
-  updateList(){
-    console.log("emmiter");
-    this.footballerService.getFootballers().subscribe(
-      (data: Footballer[]) => this.footballers = data,
-      error1 => console.log(error1.toString())
+      data => {
+        this.footballers.splice(index,1);
+        this.toastr.success("Usunięto zawodnika", 'Success!');
+      },
+      error => this.toastr.error(error.message, "Error!")
     )
   }
 

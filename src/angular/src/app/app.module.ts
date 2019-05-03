@@ -15,6 +15,8 @@ import {FootballerComponent} from "./html/footballer/footballer.component";
 import {FootballerEditComponent} from "./html/footballer/footballer-edit/footballer-edit.component";
 import {UpdateEmitterService} from "./services/update-emitter.service";
 import {CommonModule} from "@angular/common";
+import {ToastrModule} from "ngx-toastr";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 
@@ -51,6 +53,8 @@ const  routes: Routes = [
     FormsModule,
     HttpClientModule,
     CommonModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [UpdateEmitterService],
   bootstrap: [AppComponent]
