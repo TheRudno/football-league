@@ -15,6 +15,7 @@ import { MatchComponent } from './html/match/match.component';
 import { TeamComponent } from './html/match/team/team.component';
 import { MatchAddComponent } from './html/match/match-add/match-add.component';
 import { GoalsEditComponent } from './html/match/goals-edit/goals-edit.component';
+import { TeamPickerComponent } from './html/match/team-picker/team-picker.component';
 
 
 const  routes: Routes = [
@@ -42,7 +43,8 @@ const  routes: Routes = [
     MatchComponent,
     TeamComponent,
     MatchAddComponent,
-    GoalsEditComponent
+    GoalsEditComponent,
+    TeamPickerComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
