@@ -4,8 +4,8 @@ import {FootballerService} from '../../../services/footballer.service';
 import {Footballer} from '../../../shared/footballer.model';
 import {Match} from '../../../shared/match.model';
 import {ClubService} from '../../../services/club.service';
-import {GoalService} from "../../../services/goal.service";
-import {ToastrService} from "ngx-toastr";
+import {GoalService} from '../../../services/goal.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-goals',
@@ -23,6 +23,8 @@ export class GoalsComponent implements OnInit {
 
   @Input()
   awayGoals: Goal[];
+
+  public willUpdate = false;
 
   public footballers: Footballer[];
 
@@ -70,24 +72,42 @@ export class GoalsComponent implements OnInit {
     } else if (side === 'AWAY') {
       this.formFootballers = this.awayFootballers;
     }
-
+    this.willUpdate = false;
     this.goalCandidate = new Goal(null, null, this.match.id, null, side);
+  }
 
+  setGoalCandidateToUpdate(goal: Goal) {
+    this.willUpdate = true;
+    if (goal.side === 'HOME') {
+      this.formFootballers = this.homeFootballers;
+    } else if (goal.side === 'AWAY') {
+      this.formFootballers = this.awayFootballers;
+    }
+    this.goalCandidate = goal;
   }
 
   onSubmit() {
-    console.log(this.goalCandidate);
-    this.goalService.addGoal(this.goalCandidate).subscribe(
-      data => {
-        // todo: update emitter
-        this.toastService.success('Dodano gola', 'Goooool!');
-      },
-      error => this.toastService.error(error.message, 'Błąd!')
-    );
+    if (this.willUpdate) {
+      this.goalService.updateGoal(this.goalCandidate).subscribe(
+        data => {
+          // todo: update emitter
+          this.toastService.success('Pozmieniano gole', 'Poszły łapówki');
+        },
+        error => this.toastService.error(error.message, 'Błąd!')
+      );
+    } else {
+      this.goalService.addGoal(this.goalCandidate).subscribe(
+        data => {
+          // todo: update emitter
+          this.toastService.success('Dodano gola', 'Goooool!');
+        },
+        error => this.toastService.error(error.message, 'Błąd!')
+      );
+    }
   }
 
 
-  removeGoal(id: number){
+  removeGoal(id: number) {
     this.goalService.removeGoal(id).subscribe(
       data => {
         // todo: update emitter
