@@ -49,8 +49,10 @@ public class GoalREST {
         try{
             goal.setId(null);
             Goal newGoal = goal.toGoal();
-            newGoal.setScorer(footballerService.getById(goal.getScorer()));
-            newGoal.setMatch(matchService.getById(goal.getMatch()));
+            if(goal.getScorer()!=null)
+                newGoal.setScorer(footballerService.getById(goal.getScorer()));
+            if(goal.getMatch()!=null)
+                newGoal.setMatch(matchService.getById(goal.getMatch()));
             goalService.add(newGoal);
             return Response
                     .noContent()
@@ -60,7 +62,7 @@ public class GoalREST {
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
                     .build();
-        } catch (ElementNotFoundException exception) {
+        } catch (ConversionException | ElementNotFoundException exception) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorDTO.from(exception))
@@ -80,7 +82,7 @@ public class GoalREST {
     }
 
     @POST
-    @Path("/update/{id}")
+    @Path("{id}/update")
     @Consumes(ApplicationConfig.DEFAULT_MEDIA_TYPE)
     @Produces(ApplicationConfig.DEFAULT_MEDIA_TYPE)
     public Response update(@PathParam("id")Long id, GoalDTO goal){

@@ -36,7 +36,11 @@ export class TeamPickerComponent implements OnInit {
 
   ngOnInit() {
     this.valueCandidate = this.value;
-    this.clubService.getClubs().subscribe(clubs => this.clubs = clubs, error => console.log(error));
+    this.clubService.getClubs().subscribe(clubs => {
+      this.clubs = clubs;
+      this.save();
+    }, error => console.log(error));
+
   }
 
   save() {

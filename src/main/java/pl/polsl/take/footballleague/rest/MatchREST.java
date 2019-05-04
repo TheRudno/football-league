@@ -1,9 +1,11 @@
 package pl.polsl.take.footballleague.rest;
 
 import pl.polsl.take.footballleague.ApplicationConfig;
+import pl.polsl.take.footballleague.database.Footballer;
 import pl.polsl.take.footballleague.database.Goal;
 import pl.polsl.take.footballleague.database.Match;
 import pl.polsl.take.footballleague.dto.ErrorDTO;
+import pl.polsl.take.footballleague.dto.FootballerDTO;
 import pl.polsl.take.footballleague.dto.MatchDTO;
 import pl.polsl.take.footballleague.dto.MatchListDTO;
 import pl.polsl.take.footballleague.exceptions.ElementNotFoundException;
@@ -40,6 +42,29 @@ public class MatchREST {
                 .ok()
                 .entity(MatchListDTO.from(matches))
                 .build();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(ApplicationConfig.DEFAULT_MEDIA_TYPE)
+    public Response getById(@PathParam("id") Long id) {
+        try{
+            Match match= matchService.getById(id);
+            return Response
+                    .ok()
+                    .entity(MatchDTO.from(match))
+                    .build();
+        }catch(ElementNotFoundException exception){
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity(ErrorDTO.from(exception))
+                    .build();
+        }catch(Exception exception){
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(ErrorDTO.from(exception))
+                    .build();
+        }
     }
 
     @POST
@@ -91,7 +116,7 @@ public class MatchREST {
     }
 
     @POST
-    @Path("/update/{id}")
+    @Path("/{id}/update")
     @Consumes(ApplicationConfig.DEFAULT_MEDIA_TYPE)
     @Produces(ApplicationConfig.DEFAULT_MEDIA_TYPE)
     public Response update(@PathParam("id")Long id, MatchDTO match){

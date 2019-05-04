@@ -4,10 +4,10 @@ import { Adapter } from '../services/adapter';
 export class Match {
   constructor(
     public id: number,
-    public homeSideId: number,
-    public awaySideId: number,
+    public homeSide: number,
+    public awaySide: number,
     public matchDate: Date,
-    public goalIds: number[],
+    public goals: number[],
     public result: string
   ) {}
 }

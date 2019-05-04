@@ -5,8 +5,8 @@ export class Goal {
   constructor(
     public id: number,
     public goalMinute: number,
-    public matchId: number,
-    public scorerId: number,
+    public match: number,
+    public scorer: number,
     public side: string
   ) {}
 }

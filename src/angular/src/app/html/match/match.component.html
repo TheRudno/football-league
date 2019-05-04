@@ -9,11 +9,24 @@
       </div>
       <div class="row">
         <ul class="list-group col">
-          <li class="row list-group-item" *ngFor="let match of matches">
-            <div class="row">
-              <div class="col-md-5"><app-team [team]="getClub(match.homeSideId)"></app-team></div>
-              <div class="col-md-2 text-center"><h1>{{ getResultString(match) }}</h1></div>
-              <div class="col-md-5 text-right"><app-team [team]="getClub(match.awaySideId)"></app-team></div>
+          <li class="row list-group-item" *ngFor="let match of matches" [routerLink]="['./', match.id]" routerLinkActive="active">
+            <div class="row" >
+              <div class="col-md-5 "
+                   [class.alert]="match.result==='HOMEWIN'"
+                   [class.alert-info]="match.result==='HOMEWIN'">
+                <app-team [team]="getClub(match.homeSide)"></app-team>
+              </div>
+
+              <div class="col-md-2" >
+                <div class="h1 text-center">{{ getResultString(match) }}</div>
+                <div class="text-center" >{{ match.matchDate | date }}</div>
+              </div>
+
+              <div class="col-md-5  text-right"
+                   [class.alert]="match.result==='AWAYWIN'"
+                   [class.alert-info]="match.result==='AWAYWIN'">
+                <app-team [team]="getClub(match.awaySide)"></app-team>
+              </div>
             </div>
           </li>
         </ul>

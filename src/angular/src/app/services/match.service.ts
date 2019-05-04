@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {Match, MatchAdapter} from '../shared/match.model';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {restPath} from 'src/environments/environment';
+import {option, restPath} from 'src/environments/environment';
 import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
@@ -24,7 +24,7 @@ export class MatchService {
       console.error('An error occurred:', error.error.message);
     } else {
       // The backend returned an unsuccessful response code. The response body may contain clues as to what went wrong,
-      console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
+      console.error(`Backend returned code ${error.status}, ` + `body was: `, error.error);
     }
     // return an observable with a user-facing error message
     return throwError(error);
@@ -44,6 +44,28 @@ export class MatchService {
     );
   }
 
+  addMatch(match: Match): Observable<any> {
+    return this.http.post(this.restPath + 'add', JSON.stringify(match), option).pipe(
+      catchError(this.handleError)
+    );
+  }
 
+  getMatch(id: number): Observable<Match> {
+    return this.http.get(this.restPath + id).pipe(
+      map((data: any) => data),
+      catchError(this.handleError)
+    );
+  }
+
+  removeMatch(id: number): Observable<any> {
+    return this.http.get(this.restPath + `${id}/remove`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  updateMatch(match: Match): Observable<any> {
+    return this.http.post(this.restPath + `${match.id}/update`, JSON.stringify(match), option).pipe(
+      catchError(this.handleError)
+    );
+  }
 
 }

@@ -16,7 +16,7 @@ public class Goal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotNull
     @Column(nullable = false)
     private int goalMinute;
 
@@ -30,7 +30,7 @@ public class Goal {
     @JoinColumn
     private Footballer scorer;
 
-    @NotEmpty
+    @NotNull
     @Column(nullable = false)
     private Team team;
 

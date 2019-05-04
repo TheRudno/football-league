@@ -13,8 +13,8 @@ import { ClubSquadComponent } from './html/club/club-squad/club-squad.component'
 import {FormsModule} from "@angular/forms";
 import { MatchComponent } from './html/match/match.component';
 import { TeamComponent } from './html/match/team/team.component';
-import { MatchAddComponent } from './html/match/match-add/match-add.component';
-import { GoalsEditComponent } from './html/match/goals-edit/goals-edit.component';
+import { MatchEditComponent } from './html/match/match-edit/match-edit.component';
+import { GoalsComponent } from './html/match/goals/goals.component';
 import { TeamPickerComponent } from './html/match/team-picker/team-picker.component';
 import {FootballerComponent} from "./html/footballer/footballer.component";
 import {FootballerEditComponent} from "./html/footballer/footballer-edit/footballer-edit.component";
@@ -22,6 +22,7 @@ import {UpdateEmitterService} from "./services/update-emitter.service";
 import {CommonModule} from "@angular/common";
 import {ToastrModule} from "ngx-toastr";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { MatchOverviewComponent } from './html/match/match-overview/match-overview.component';
 
 
 const  routes: Routes = [
@@ -35,7 +36,9 @@ const  routes: Routes = [
       {path: 'add', component: FootballerEditComponent}
     ]},
   {path: 'matches', component: MatchComponent, children: [
-      {path: 'add', component: MatchAddComponent},
+      {path: 'add', component: MatchEditComponent},
+      {path: ':id/edit', component: MatchEditComponent},
+      {path: ':id', component: MatchOverviewComponent}
     ]},
   {path: '', component: ClubComponent, pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
@@ -53,11 +56,12 @@ const  routes: Routes = [
     ClubSquadComponent,
     MatchComponent,
     TeamComponent,
-    MatchAddComponent,
-    GoalsEditComponent,
+    MatchEditComponent,
+    GoalsComponent,
     TeamPickerComponent,
     FootballerEditComponent,
-    FootballerComponent
+    FootballerComponent,
+    MatchOverviewComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

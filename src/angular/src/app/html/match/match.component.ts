@@ -18,47 +18,33 @@ export class MatchComponent implements OnInit {
   private clubs: Club[];
   private goals: Goal[];
 
-  constructor(private matchService: MatchService, private clubService: ClubService, private goalService: GoalService) { }
+  constructor(
+    private matchService: MatchService,
+    private clubService: ClubService,
+    private goalService: GoalService
+  ) { }
 
   ngOnInit() {
 
     this.matchService.getMatches().subscribe(
-      data => {
-
-        this.matches = data;
-        //
-        // for (let x of this.matches) {
-        //
-        // }
-        //
-        //
-        // this.clubService.getClub()
-        //
-
+      matches => {
+        this.clubService.getClubs().subscribe(
+          clubs => {
+            this.goalService.getGoals().subscribe(
+              goals => {
+                this.clubs = clubs;
+                this.goals = goals;
+                this.matches = matches;
+              },
+              error => console.log(error)
+            );
+          },
+          error => console.log(error)
+        );
       },
       error => console.log(error)
     );
 
-
-    this.clubService.getClubs().subscribe(
-      data => this.clubs = data,
-      error => console.log(error)
-    );
-
-    this.clubService.getClubs().subscribe(
-      data => this.clubs = data,
-      error => console.log(error)
-    );
-
-    this.goalService.getGoals().subscribe(
-      data => this.goals = data,
-      error => console.log(error)
-    );
-
-    // this.clubService.getClubs().subscribe(
-    //   (data : Club[]) => this.clubs = data,
-    //   error => { console.log(error) }
-    // )
   }
 
 
@@ -78,7 +64,7 @@ export class MatchComponent implements OnInit {
   getGoals(match: Match) {
     const result = {AWAY: [], HOME: []};
 
-    for (const x of match.goalIds) {
+    for (const x of match.goals) {
       const goal = this.getGoal(x);
       result[goal.side].push(goal);
     }

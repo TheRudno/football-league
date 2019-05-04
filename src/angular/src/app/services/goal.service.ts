@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {restPath} from '../../environments/environment';
+import {option, restPath} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Goal, GoalAdapter} from '../shared/goal.model';
 import {Observable, throwError} from 'rxjs';
@@ -22,7 +22,7 @@ export class GoalService {
       console.error('An error occurred:', error.error.message);
     } else {
       // The backend returned an unsuccessful response code. The response body may contain clues as to what went wrong,
-      console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
+      console.error(`Backend returned code ${error.status}, ` + `body was: `, error.error);
     }
     // return an observable with a user-facing error message
     return throwError(error);
@@ -34,4 +34,24 @@ export class GoalService {
       catchError(this.handleError)
     );
   }
+
+  addGoal(goal: Goal): Observable<any> {
+    return this.http.post(this.restPath + 'add', JSON.stringify(goal), option).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  removeGoal(id: number): Observable<any> {
+    return this.http.get(this.restPath + `${id}/remove`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateGoal(goal: Goal): Observable<any> {
+    return this.http.post(this.restPath + `${goal.id}/update`, JSON.stringify(goal), option).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
 }

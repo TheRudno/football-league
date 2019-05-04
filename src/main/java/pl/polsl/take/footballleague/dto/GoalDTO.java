@@ -34,9 +34,9 @@ public class GoalDTO {
         );
     }
 
-    public Goal toGoal(){
+    public Goal toGoal() throws ConversionException {
         Goal goal = new Goal();
-        goal.setTeam(Goal.Team.valueOf(side));
+        convertAndConsumeIfNonNull(goal::setTeam, Goal.Team::valueOf, side);
         goal.setGoalMinute(goalMinute);
         return goal;
     }
