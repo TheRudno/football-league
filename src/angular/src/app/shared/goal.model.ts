@@ -2,14 +2,26 @@ import { Injectable } from '@angular/core';
 import { Adapter } from "../services/adapter";
 
 export class Goal {
-  constructor() {}
+  constructor(
+    public id: number,
+    public goalMinute: number,
+    public matchId: number,
+    public scorerId: number,
+    public side: string
+  ) {}
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoalAdapter implements Adapter<Goal> {
-  adapt(){
-    return null;
+  adapt(from: any) {
+    return new Goal(
+      from.id,
+      from.goalMinute,
+      from.match,
+      from.scorer,
+      from.side,
+    );
   }
 }

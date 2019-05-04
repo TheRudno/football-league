@@ -1,16 +1,26 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="row mt-md-4">
         <h1>Mecze</h1>
+        <div class="icon">
+          <i class="fas fa-plus-square plus" [routerLink]="['./add']"></i>
+        </div>
       </div>
       <div class="row">
         <ul class="list-group col">
-          <li class="list-group-item" *ngFor="let match of matches">
-            {{ match | json }}
+          <li class="row list-group-item" *ngFor="let match of matches">
+            <div class="row">
+              <div class="col-md-5"><app-team [team]="getClub(match.homeSideId)"></app-team></div>
+              <div class="col-md-2 text-center"><h1>{{ getResultString(match) }}</h1></div>
+              <div class="col-md-5 text-right"><app-team [team]="getClub(match.awaySideId)"></app-team></div>
+            </div>
           </li>
         </ul>
       </div>
+    </div>
+    <div class="col-md-6">
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

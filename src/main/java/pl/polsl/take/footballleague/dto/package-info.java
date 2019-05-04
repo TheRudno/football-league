@@ -1,6 +1,6 @@
 @XmlJavaTypeAdapters({
-        @XmlJavaTypeAdapter(type = LocalDate.class,
-                value = LocalDateXmlAdapter.class)
+    @XmlJavaTypeAdapter(type = LocalDate.class,
+        value = LocalDateXmlAdapter.class)
 })
 package pl.polsl.take.footballleague.dto;
 

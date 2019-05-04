@@ -11,7 +11,7 @@ import {catchError, map} from "rxjs/operators";
 export class MatchService {
 
   private restPath = restPath.restPath + '/match/';
-  //private matches: Match[] = [];
+  // private matches: Match[] = [];
 
   constructor(
     private http: HttpClient,

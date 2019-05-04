@@ -12,6 +12,9 @@ import { PageNotFoundComponent } from './html/page-not-found/page-not-found.comp
 import { ClubSquadComponent } from './html/club/club-squad/club-squad.component';
 import {FormsModule} from "@angular/forms";
 import { MatchComponent } from './html/match/match.component';
+import { TeamComponent } from './html/match/team/team.component';
+import { MatchAddComponent } from './html/match/match-add/match-add.component';
+import { GoalsEditComponent } from './html/match/goals-edit/goals-edit.component';
 
 
 const  routes: Routes = [
@@ -20,7 +23,9 @@ const  routes: Routes = [
       {path: 'add', component: ClubEditComponent},
       {path: 'squad/:id', component: ClubSquadComponent}
     ]},
-  {path: 'matches', component: MatchComponent},
+  {path: 'matches', component: MatchComponent, children: [
+      {path: 'add', component: MatchAddComponent},
+    ]},
   {path: '**', component: PageNotFoundComponent}
 ]
 
@@ -34,7 +39,10 @@ const  routes: Routes = [
     ClubEditComponent,
     PageNotFoundComponent,
     ClubSquadComponent,
-    MatchComponent
+    MatchComponent,
+    TeamComponent,
+    MatchAddComponent,
+    GoalsEditComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

@@ -1,0 +1,48 @@
+<div class="row mt-md-5">
+  <div class="col-md-12">
+    <h2>Dodaj nowy mecz</h2>
+  </div>
+</div>
+<div class="row p-md-3">
+  <form class="col">
+
+
+      <div class="form-group">
+        <label for="homeSide">Gospodarz</label>
+        <div id="homeSide" class="input-group">
+          <input type="text" class="form-control" placeholder="Klub gospodarzy" readonly>
+          <div class="input-group-append">
+            <button type="button" class="btn btn-secondary">Wybierz</button>
+          </div>
+          <input type="hidden">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="awaySide">Gość</label>
+        <div id="awaySide" class="input-group">
+          <input type="text" class="form-control" placeholder="Klub gości" readonly>
+          <div class="input-group-append">
+            <button type="button" class="btn btn-secondary">Wybierz</button>
+          </div>
+          <input type="hidden">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="date">Data</label>
+        <input type="date" class="form-control" id="date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Stan</label>
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>1</option>
+          <option>2</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+  </form>
+</div>
