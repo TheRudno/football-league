@@ -3,7 +3,7 @@ import {Observable, throwError} from 'rxjs';
 import {Match, MatchAdapter} from '../shared/match.model';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {restPath} from 'src/environments/environment';
-import {catchError, map} from "rxjs/operators";
+import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +36,14 @@ export class MatchService {
       catchError(this.handleError)
     );
   }
+
+  getMatchResults(): Observable<string[]> {
+    return this.http.get(this.restPath + 'result').pipe(
+      map((data: any) => data.map( item => item)),
+      catchError(this.handleError)
+    );
+  }
+
 
 
 }

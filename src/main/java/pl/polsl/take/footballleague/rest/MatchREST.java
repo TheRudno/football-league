@@ -83,7 +83,7 @@ public class MatchREST {
     @Path("/result")
     @Consumes(ApplicationConfig.DEFAULT_MEDIA_TYPE)
     @Produces(ApplicationConfig.DEFAULT_MEDIA_TYPE)
-    public Response getPositions(){
+    public Response getPositions(){ //todo: rename
         return Response
                 .ok()
                 .entity(Match.Result.values())

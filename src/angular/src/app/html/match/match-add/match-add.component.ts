@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Club} from '../../../shared/club.model';
+import {NgForm} from '@angular/forms';
+import {Match} from '../../../shared/match.model';
+import {MatchService} from '../../../services/match.service';
 
 @Component({
   selector: 'app-match-add',
@@ -8,16 +11,30 @@ import {Club} from '../../../shared/club.model';
 })
 export class MatchAddComponent implements OnInit {
 
-  homeSide: Club;
-  awaySide: Club;
+  public match: Match = new Match(null, null, null, null, null, null);
+
+  public matchResults: string[];
 
 
-  constructor() { }
+  constructor(private matchService: MatchService) { }
 
   ngOnInit() {
-    this.homeSide = new Club(null, null, null, null);
-    this.awaySide = new Club(null, null, null, null);
+    this.matchService.getMatchResults().subscribe(
+      value => this.matchResults = value,
+      error => console.log(error)
+    );
 
   }
 
+
+  onSubmit() {
+    console.log(this.match);
+  }
+
+  assignToHomeSideId( event: number) {
+    this.match.homeSideId = event;
+  }
+  assignToAwaySideId( event: number) {
+    this.match.awaySideId = event;
+  }
 }

@@ -16,6 +16,12 @@ import { TeamComponent } from './html/match/team/team.component';
 import { MatchAddComponent } from './html/match/match-add/match-add.component';
 import { GoalsEditComponent } from './html/match/goals-edit/goals-edit.component';
 import { TeamPickerComponent } from './html/match/team-picker/team-picker.component';
+import {FootballerComponent} from "./html/footballer/footballer.component";
+import {FootballerEditComponent} from "./html/footballer/footballer-edit/footballer-edit.component";
+import {UpdateEmitterService} from "./services/update-emitter.service";
+import {CommonModule} from "@angular/common";
+import {ToastrModule} from "ngx-toastr";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 const  routes: Routes = [
@@ -23,10 +29,15 @@ const  routes: Routes = [
       {path: 'edit/:id', component: ClubEditComponent},
       {path: 'add', component: ClubEditComponent},
       {path: 'squad/:id', component: ClubSquadComponent}
+      ]},
+  {path: 'footballers', component: FootballerComponent, children:[
+      {path: 'edit/:id', component: FootballerEditComponent},
+      {path: 'add', component: FootballerEditComponent}
     ]},
   {path: 'matches', component: MatchComponent, children: [
       {path: 'add', component: MatchAddComponent},
     ]},
+  {path: '', component: ClubComponent, pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ]
 
@@ -44,15 +55,20 @@ const  routes: Routes = [
     TeamComponent,
     MatchAddComponent,
     GoalsEditComponent,
-    TeamPickerComponent
+    TeamPickerComponent,
+    FootballerEditComponent,
+    FootballerComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [UpdateEmitterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

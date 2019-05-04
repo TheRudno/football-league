@@ -3,6 +3,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
 import {Club} from "../../../shared/club.model";
 import {ClubService} from "../../../services/club.service";
+import {UpdateEmitterService} from "../../../services/update-emitter.service";
+import {ToastrService} from "ngx-toastr";
+import {error} from "@angular/compiler/src/util";
 
 @Component({
   selector: 'app-club-edit',
@@ -16,7 +19,8 @@ export class ClubEditComponent implements OnInit {
   public model: Club = new Club(null,null,null,null);
   private addMode: boolean;
 
-  constructor(private route: ActivatedRoute, private clubService: ClubService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private clubService: ClubService, private router: Router
+              ,private updateService: UpdateEmitterService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -26,8 +30,8 @@ export class ClubEditComponent implements OnInit {
         this.clubService.getClub(this.clubID).subscribe(
           data => {
             this.model = data;
-            console.log(this.model);
-          }
+          },
+          error => this.toastr.warning(error.message, 'Warning!')
         )
       }else{
         this.btnText = "DODAJ";
@@ -42,9 +46,23 @@ export class ClubEditComponent implements OnInit {
 
   onSubmit(form: NgForm){
     if(!this.addMode)
-      this.clubService.updateClub(this.model).subscribe();
+      this.clubService.updateClub(this.model).subscribe(
+        data => {
+          this.updateService.updateClubs();
+          this.router.navigate(["./clubs"]);
+          this.toastr.success("Zmodyfikowano klub", 'Success!');
+        },
+        error => this.toastr.error(error.message, 'Warning!')
+      );
     else
-      this.clubService.addClub(this.model).subscribe();
+      this.clubService.addClub(this.model).subscribe(
+        data => {
+          this.updateService.updateClubs();
+          this.router.navigate(["./clubs"]);
+          this.toastr.success("Dodano klub", 'Success!');
+        },
+        error => this.toastr.error(error.message, 'Warning!')
+      );
   }
 
 }

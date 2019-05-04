@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Club} from "../../../shared/club.model";
+import {Club} from '../../../shared/club.model';
+import {ClubService} from '../../../services/club.service';
 
 @Component({
   selector: 'app-team-picker',
@@ -9,16 +10,42 @@ import {Club} from "../../../shared/club.model";
 export class TeamPickerComponent implements OnInit {
 
 
+  clubs: Club[];
+
   @Input()
-  team: Club;
+  id: string;
+
+  @Input()
+  placeholder: string;
+
+  @Input()
+  value: number;
 
   @Output()
-  teamChanged = new EventEmitter<string>();
+  valueChanged = new EventEmitter<number>();
 
+  valueCandidate: number;
 
-  constructor() { }
+  teamDescriptor: string;
 
-  ngOnInit() {
+  select(i: number) {
+    this.valueCandidate = i;
   }
 
+  constructor(private clubService: ClubService) { }
+
+  ngOnInit() {
+    this.valueCandidate = this.value;
+    this.clubService.getClubs().subscribe(clubs => this.clubs = clubs, error => console.log(error));
+  }
+
+  save() {
+    this.value = this.valueCandidate;
+
+    const team = this.clubs.find(club => club.id === this.valueCandidate);
+
+    this.valueChanged.emit(this.value);
+
+    this.teamDescriptor = team.name + ' ' + team.city + ' (' + team.country + ')';
+  }
 }

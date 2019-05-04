@@ -4,45 +4,34 @@
   </div>
 </div>
 <div class="row p-md-3">
-  <form class="col">
-
-
+  <form class="col" (ngSubmit)="onSubmit()" #form="ngForm" >
       <div class="form-group">
         <label for="homeSide">Gospodarz</label>
-        <div id="homeSide" class="input-group">
-          <input type="text" class="form-control" placeholder="Klub gospodarzy" readonly>
-          <div class="input-group-append">
-            <button type="button" class="btn btn-secondary">Wybierz</button>
-          </div>
-          <input type="hidden">
-        </div>
+        <app-team-picker id="homeSide" [value]="match.homeSideId" (valueChanged)="assignToHomeSideId($event)" placeholder="Klub gospodarzy"></app-team-picker>
       </div>
 
       <div class="form-group">
         <label for="awaySide">Gość</label>
-        <div id="awaySide" class="input-group">
-          <input type="text" class="form-control" placeholder="Klub gości" readonly>
-          <div class="input-group-append">
-            <button type="button" class="btn btn-secondary">Wybierz</button>
-          </div>
-          <input type="hidden">
-        </div>
+        <app-team-picker id="awaySide" [value]="match.awaySideId" (valueChanged)="assignToAwaySideId($event)" placeholder="Klub gości"></app-team-picker>
       </div>
 
       <div class="form-group">
         <label for="date">Data</label>
-        <input type="date" class="form-control" id="date" required>
+        <input type="date" class="form-control" id="date" [(ngModel)]="match.matchDate" name="matchDate" required>
       </div>
 
       <div class="form-group">
         <label for="exampleFormControlSelect1">Stan</label>
-        <select class="form-control" id="exampleFormControlSelect1">
-          <option>1</option>
-          <option>2</option>
+        <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="match.result" name="result" >
+          <option></option>
+          <option *ngFor="let matchResult of matchResults">{{matchResult}}</option>
         </select>
       </div>
 
-      <button type="submit" class="btn btn-primary">Submit</button>
-      <app-team-picker [team]="awaySide"></app-team-picker>
+      <button type="submit" class="btn btn-primary"
+              [disabled]="form.invalid && match.homeSideId!==null && match.awaySideId!==null "
+              [ngClass]="{'disabled': form.invalid && match.homeSideId!==null && match.awaySideId!==null}">
+        Zapisz
+      </button>
   </form>
 </div>
