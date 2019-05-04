@@ -7,6 +7,7 @@ import {GoalService} from '../../../services/goal.service';
 import {Club} from '../../../shared/club.model';
 import {Goal} from '../../../shared/goal.model';
 import {ToastrService} from "ngx-toastr";
+import {UpdateEmitterService} from "../../../services/update-emitter.service";
 
 @Component({
   selector: 'app-match-overview',
@@ -30,7 +31,8 @@ export class MatchOverviewComponent implements OnInit {
     private matchService: MatchService,
     private clubService: ClubService,
     private goalService: GoalService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private updaterService: UpdateEmitterService
 
   ) { }
 
@@ -67,6 +69,45 @@ export class MatchOverviewComponent implements OnInit {
         );
       }
     });
+
+    this.updaterService.goalsUpdate.subscribe(
+      () => {
+        this.route.params.subscribe(params => {
+          if (params.id != null) {
+            this.matchService.getMatch(params.id).subscribe(
+              match => {
+                this.clubService.getClubs().subscribe(
+                  clubs => {
+                    this.goalService.getGoals().subscribe(
+                      goals => {
+                        this.homeClub = clubs.find( club => {
+                          return club.id === match.homeSide;
+                        });
+
+                        this.awayClub = clubs.find( club => {
+                          return club.id === match.awaySide;
+                        });
+
+                        this.goals = goals;
+                        this.matchGoals = this.getGoals(match);
+
+                        this.match = match;
+                      },
+                      error => console.log(error)
+                    );
+                  },
+                  error => console.log(error)
+                );
+
+              },
+              error => console.log(error)
+            );
+          }
+        });
+      }
+    );
+
+
   }
 
   getGoals(match: Match) {
@@ -87,7 +128,10 @@ export class MatchOverviewComponent implements OnInit {
 
   removeMatch() {
     this.matchService.removeMatch(this.match.id).subscribe(
-      answer => this.toastService.success("Usunięto","Wszystko ok"),
+      answer => {
+        this.toastService.success("Usunięto","Wszystko ok");
+        this.updaterService.updateMatches();
+      },
       error => this.toastService.error(error,"To nie zadziałało")
     );
   }

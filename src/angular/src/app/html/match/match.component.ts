@@ -5,6 +5,7 @@ import {ClubService} from '../../services/club.service';
 import {Club} from '../../shared/club.model';
 import {Goal} from '../../shared/goal.model';
 import {GoalService} from '../../services/goal.service';
+import {UpdateEmitterService} from "../../services/update-emitter.service";
 
 
 @Component({
@@ -21,7 +22,8 @@ export class MatchComponent implements OnInit {
   constructor(
     private matchService: MatchService,
     private clubService: ClubService,
-    private goalService: GoalService
+    private goalService: GoalService,
+    private updater: UpdateEmitterService
   ) { }
 
   ngOnInit() {
@@ -43,6 +45,29 @@ export class MatchComponent implements OnInit {
         );
       },
       error => console.log(error)
+    );
+
+    this.updater.matchesUpdate.subscribe(
+      e => {
+        this.matchService.getMatches().subscribe(
+          matches => {
+            this.clubService.getClubs().subscribe(
+              clubs => {
+                this.goalService.getGoals().subscribe(
+                  goals => {
+                    this.clubs = clubs;
+                    this.goals = goals;
+                    this.matches = matches;
+                  },
+                  error => console.log(error)
+                );
+              },
+              error => console.log(error)
+            );
+          },
+          error => console.log(error)
+        );
+      }
     );
 
   }

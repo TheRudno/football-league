@@ -6,6 +6,7 @@ import {Match} from '../../../shared/match.model';
 import {ClubService} from '../../../services/club.service';
 import {GoalService} from '../../../services/goal.service';
 import {ToastrService} from 'ngx-toastr';
+import {UpdateEmitterService} from "../../../services/update-emitter.service";
 
 @Component({
   selector: 'app-goals',
@@ -39,7 +40,8 @@ export class GoalsComponent implements OnInit {
     private footballerService: FootballerService,
     private clubService: ClubService,
     private goalService: GoalService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private updater: UpdateEmitterService
   ) { }
 
   ngOnInit() {
@@ -90,7 +92,8 @@ export class GoalsComponent implements OnInit {
     if (this.willUpdate) {
       this.goalService.updateGoal(this.goalCandidate).subscribe(
         data => {
-          // todo: update emitter
+          this.updater.updateMatches();
+          this.updater.updateGoals();
           this.toastService.success('Pozmieniano gole', 'Poszły łapówki');
         },
         error => this.toastService.error(error.message, 'Błąd!')
@@ -98,7 +101,8 @@ export class GoalsComponent implements OnInit {
     } else {
       this.goalService.addGoal(this.goalCandidate).subscribe(
         data => {
-          // todo: update emitter
+          this.updater.updateMatches();
+          this.updater.updateGoals();
           this.toastService.success('Dodano gola', 'Goooool!');
         },
         error => this.toastService.error(error.message, 'Błąd!')
@@ -110,7 +114,8 @@ export class GoalsComponent implements OnInit {
   removeGoal(id: number) {
     this.goalService.removeGoal(id).subscribe(
       data => {
-        // todo: update emitter
+        this.updater.updateMatches();
+        this.updater.updateGoals();
         this.toastService.success('i już nie ma gola.', '!loooooooG');
       },
       error => this.toastService.error(error.message, 'Błąd!')

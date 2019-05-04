@@ -50,6 +50,10 @@ export class TeamPickerComponent implements OnInit {
 
     this.valueChanged.emit(this.value);
 
-    this.teamDescriptor = team.name + ' ' + team.city + ' (' + team.country + ')';
+    if (team !== undefined) {
+      this.teamDescriptor = team.name + ' ' + team.city + ' (' + team.country + ')';
+    }
+
+
   }
 }

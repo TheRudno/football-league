@@ -5,6 +5,7 @@ import {Match} from '../../../shared/match.model';
 import {MatchService} from '../../../services/match.service';
 import {ToastrService} from 'ngx-toastr';
 import {ActivatedRoute, Router} from '@angular/router';
+import {UpdateEmitterService} from "../../../services/update-emitter.service";
 
 @Component({
   selector: 'app-match-add',
@@ -24,7 +25,8 @@ export class MatchEditComponent implements OnInit {
     private matchService: MatchService,
     private toastService: ToastrService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private updater: UpdateEmitterService
   ) { }
 
   ngOnInit() {
@@ -54,7 +56,7 @@ export class MatchEditComponent implements OnInit {
     if (this.addMode) {
       this.matchService.addMatch(this.match).subscribe(
         data => {
-          // update emiter
+          this.updater.updateMatches();
           this.toastService.success('Dodano mecz', 'Śmiga jak rakieta!');
           this.router.navigate(['..'], {relativeTo: this.route});
         },
@@ -64,8 +66,7 @@ export class MatchEditComponent implements OnInit {
       console.log(this.match);
       this.matchService.updateMatch(this.match).subscribe(
         data => {
-          // update emiter
-
+          this.updater.updateMatches();
           this.toastService.success('Zmodyfikowano mecz', 'Śmiga jak szerszeń!');
           this.router.navigate(['..'], {relativeTo: this.route});
         },
