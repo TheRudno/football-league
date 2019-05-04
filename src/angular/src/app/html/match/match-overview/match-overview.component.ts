@@ -119,6 +119,8 @@ export class MatchOverviewComponent implements OnInit {
       });
       result[goal.side].push(goal);
     }
+    result.AWAY.sort((a, b) => (a.goalMinute - b.goalMinute));
+    result.HOME.sort((a, b) => (a.goalMinute - b.goalMinute));
     return result;
   }
 
