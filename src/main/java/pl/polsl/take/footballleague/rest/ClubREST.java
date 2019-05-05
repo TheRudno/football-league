@@ -2,9 +2,11 @@ package pl.polsl.take.footballleague.rest;
 
 import pl.polsl.take.footballleague.ApplicationConfig;
 import pl.polsl.take.footballleague.database.Club;
+import pl.polsl.take.footballleague.database.Footballer;
 import pl.polsl.take.footballleague.dto.ClubDTO;
 import pl.polsl.take.footballleague.dto.ClubListDTO;
 import pl.polsl.take.footballleague.dto.ErrorDTO;
+import pl.polsl.take.footballleague.dto.FootballerListDTO;
 import pl.polsl.take.footballleague.exceptions.ElementNotFoundException;
 import pl.polsl.take.footballleague.exceptions.ElementValidationException;
 import pl.polsl.take.footballleague.service.ClubServiceBean;
@@ -13,6 +15,7 @@ import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Set;
 
 @Path("/club")
 public class ClubREST {
@@ -109,6 +112,25 @@ public class ClubREST {
         }catch(ElementValidationException exception) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
+                    .entity(ErrorDTO.from(exception))
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/squad")
+    @Produces(ApplicationConfig.DEFAULT_MEDIA_TYPE)
+    public Response getSquad(@PathParam("id")Long id){
+        try{
+            Club club = clubService.getById(id);
+            Set<Footballer> squad = club.getSquad();
+            return Response
+                    .ok()
+                    .entity(FootballerListDTO.from(squad))
+                    .build();
+        }catch(ElementNotFoundException exception){
+            return Response
+                    .status(Response.Status.NOT_FOUND)
                     .entity(ErrorDTO.from(exception))
                     .build();
         }

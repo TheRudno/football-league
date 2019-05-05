@@ -29,14 +29,14 @@ public class Match {
     @JoinColumn
     private Club awaySide;
 
-    @NotEmpty
+    @NotNull
     @Column(nullable = false)
     private LocalDate matchDate;
 
     @OneToMany(mappedBy = "match",fetch = FetchType.EAGER)
     private List<Goal> goals;
 
-    @Column(nullable = false)
+    @Column()
     private Result result;
 
     public enum Result{

@@ -6,7 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.ws.rs.ext.ParamConverter;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -29,7 +31,7 @@ public class Club {
     @Column(nullable = false)
     private String country;
 
-    @OneToMany(mappedBy = "club")
-    private List<Footballer> squad;
+    @OneToMany(mappedBy = "club", fetch=FetchType.EAGER)
+    private Set<Footballer> squad;
 
 }
