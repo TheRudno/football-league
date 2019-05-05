@@ -6,12 +6,6 @@
 p{
   margin-bottom: 0px;
 }
-h3{
-  cursor: pointer;
-}
-h3:hover{
-  color: #005cbf;
-}
 .icon{
   font-size: 2em;
   color: lightgrey;
@@ -19,20 +13,20 @@ h3:hover{
 }
 .edit{
   margin-right: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
 }
 .alt{
   margin-right: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
 }
 .edit:hover{
   margin-right: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
   color: #005cbf;
 }
 .alt:hover{
   margin-right: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
   color: #005cbf;
 }
 .plus{

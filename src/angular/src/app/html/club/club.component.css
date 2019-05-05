@@ -1,8 +1,3 @@
-.club{
-  border-color: #005cbf;
-  border-style: solid;
-  border-radius: 25px;
-}
 p{
   margin-bottom: 0px;
 }
@@ -19,20 +14,20 @@ h3:hover{
 }
 .edit{
   margin-right: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
 }
 .alt{
   margin-right: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
 }
 .edit:hover{
   margin-right: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
   color: #005cbf;
 }
 .alt:hover{
   margin-right: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
   color: #005cbf;
 }
 .plus{

@@ -11,16 +11,20 @@
           </div>
         </div>
       </div>
-      <div class="row text-center" *ngFor="let club of clubs; let i = index">
-          <div class="col-md-10 club mb-2">
-            <h3 [routerLink]="['./squad', club.id]">{{club.name}}</h3>
-            <p>{{club.city}}  {{club.country}}</p>
-            <div class="text-right">
-              <span class="icon">
-                <i class="fas fa-edit edit" [routerLink]="['./edit', club.id]"></i>
-                <i class="far fa-trash-alt alt" (click)="removeClub(i)"></i>
-              </span>
-            </div>
+      <div class="row text-center">
+          <div class="col-md-10 mb-2">
+            <ul class="list-group" *ngFor="let club of clubs; let i = index">
+              <li class="list-group-item">
+                <h3 [routerLink]="['./squad', club.id]">{{club.name}}</h3>
+                <p>{{club.city}}  {{club.country}}</p>
+                <div class="text-right">
+                  <span class="icon">
+                    <i class="fas fa-edit edit" [routerLink]="['./edit', club.id]"></i>
+                    <i class="far fa-trash-alt alt" (click)="removeClub(i)"></i>
+                  </span>
+                </div>
+              </li>
+            </ul>
           </div>
       </div>
     </div>
