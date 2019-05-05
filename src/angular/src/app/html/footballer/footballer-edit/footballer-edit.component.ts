@@ -7,6 +7,7 @@ import {Club} from "../../../shared/club.model";
 import {NgForm} from "@angular/forms";
 import {UpdateEmitterService} from "../../../services/update-emitter.service";
 import {ToastrService} from "ngx-toastr";
+import {el} from "@angular/platform-browser/testing/src/browser_util";
 
 @Component({
   selector: 'app-footballer-edit',
@@ -17,6 +18,8 @@ export class FootballerEditComponent implements OnInit {
 
   public model: Footballer = new Footballer(null,null,null,null, null, null, null);
   public selectedClub = new Club(null,null,null,null);
+  public playerClub = new Club(null,null,null,null);
+  private emptyClub =  new Club(null,null,null,"Brak klubu");
   public clubs: Club[];
   footballerID: number;
   positions: String[];
@@ -37,6 +40,14 @@ export class FootballerEditComponent implements OnInit {
         this.footballerService.getFootballer(this.footballerID).subscribe(
           data => {
             this.model = data;
+            if(this.model.clubId != null)
+              this.clubService.getClub(this.model.clubId).subscribe(
+                data => {
+                  this.playerClub = data
+                }
+              )
+            else
+              this.playerClub = this.emptyClub;
           }
         )
       }else{
@@ -51,7 +62,7 @@ export class FootballerEditComponent implements OnInit {
     this.clubService.getClubs().subscribe(
       (data: Club[]) => {
         this.clubs = data;
-        this.clubs.push(this.selectedClub);
+        this.clubs.push(this.emptyClub);
       }
     )
   }
@@ -79,7 +90,6 @@ export class FootballerEditComponent implements OnInit {
   }
 
   onChangeClub(form: NgForm) {
-    console.log(this.selectedClub);
     this.footballerService.assignClub(this.model.id, this.selectedClub.id).subscribe(
       data => {
         this.updateEmitter.updateFootballers();

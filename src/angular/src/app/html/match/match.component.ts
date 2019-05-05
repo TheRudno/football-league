@@ -15,7 +15,7 @@ import {UpdateEmitterService} from "../../services/update-emitter.service";
 })
 export class MatchComponent implements OnInit {
 
-  private matches: Match[];
+  public matches: Match[];
   private clubs: Club[];
   private goals: Goal[];
 
