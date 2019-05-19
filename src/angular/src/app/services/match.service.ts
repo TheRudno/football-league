@@ -58,7 +58,7 @@ export class MatchService {
   }
 
   removeMatch(id: number): Observable<any> {
-    return this.http.delete(this.restPath + `${id}/remove`).pipe(
+    return this.http.delete(this.restPath + `${id}`).pipe(
       catchError(this.handleError)
     );
   }

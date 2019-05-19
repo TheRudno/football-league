@@ -64,7 +64,7 @@ public class FootballerREST {
     }
 
     @DELETE
-    @Path("/{id}/remove")
+    @Path("/{id}")
     @Produces(ApplicationConfig.DEFAULT_MEDIA_TYPE)
     public Response removeById(@PathParam("id")Long id){
         try{
