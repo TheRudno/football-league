@@ -51,7 +51,7 @@ export class FootballerService {
   }
 
   removeFootballer(id: number): Observable<any>{
-    return this.http.get(this.restPath + id + '/remove', {observe: 'response'}).pipe(
+    return this.http.delete(this.restPath + id + '/remove', {observe: 'response'}).pipe(
       catchError(this.handleError)
     );
   }

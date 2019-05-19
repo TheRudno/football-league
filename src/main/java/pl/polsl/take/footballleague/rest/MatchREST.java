@@ -152,7 +152,7 @@ public class MatchREST {
 
     }
 
-    @GET
+    @DELETE
     @Path("/{id}/remove")
     @Produces(ApplicationConfig.DEFAULT_MEDIA_TYPE)
     public Response removeById(@PathParam("id")Long id){
